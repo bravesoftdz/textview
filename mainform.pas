@@ -47,7 +47,28 @@ implementation
 {$R *.lfm}
 
 uses
-  Settings;
+  Settings
+{$ifdef mswindows}
+  , ShlObj
+{$endif}
+  ;
+
+{$ifdef mswindows}
+function GetSpecialFolder(const CSIDL: Integer): WideString;
+var
+  SpecialPath: PWideChar;
+begin
+  Result := '';
+  SpecialPath := WideStrAlloc(MAX_PATH);
+  try
+    FillChar(SpecialPath^, MAX_PATH, 0);
+    if SHGetSpecialFolderPathW(0, SpecialPath, CSIDL, False) then
+      Result := SpecialPath;
+  finally
+    StrDispose(SpecialPath);
+  end;
+end;
+{$endif}
 
 { TForm1 }
 
@@ -62,7 +83,13 @@ begin
   if DirectoryExists(LDirectory) then
     DirectoryEdit1.Directory := LDirectory
   else
-    DirectoryEdit1.Directory := GetEnvironmentVariable('HOME');
+    DirectoryEdit1.Directory :=
+{$ifdef mswindows}
+      string(GetSpecialFolder(CSIDL_PERSONAL))
+{$else}
+      GetEnvironmentVariable('HOME')
+{$endif}
+    ;
   if Length(LFilter) > 0 then
     FilterComboBox1.Filter := LFilter;
   if LItemIndex >= 0 then
