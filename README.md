@@ -3,7 +3,11 @@
 
 ## Overview
 
-*TextView* is an application for quickly viewing text files contained in a folder.
+*TextView* is a multiplatform application for quickly viewing text files contained in a folder.
+
+## Screenshot
+
+![alt text](https://raw.githubusercontent.com/rchastain/textview/master/screenshot/textview001.png)
 
 ## Configuration
 
