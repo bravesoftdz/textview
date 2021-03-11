@@ -7,7 +7,7 @@
 
 ## Screenshot
 
-![alt text](https://raw.githubusercontent.com/rchastain/textview/master/screenshot/textview001.png)
+![alt text](https://raw.githubusercontent.com/rchastain/textview/master/screenshot/textview002.png)
 
 ## Configuration
 
@@ -20,6 +20,4 @@ itemindex=0
 
 ## Credit
 
-*TextView* is a Lazarus project, inspired by [ViewTxt](https://github.com/crmacedonio/ViewTxt).
-
-The icon of the project comes from [here](https://commons.wikimedia.org/wiki/File:Pixelart-tv-iso.png).
+*TextView* is a Lazarus project, inspired by [ViewTxt](https://github.com/crmacedonio/ViewTxt). The icon of the project comes from [here](https://commons.wikimedia.org/wiki/File:Pixelart-tv-iso.png).
