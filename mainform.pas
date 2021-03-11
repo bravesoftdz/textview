@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus,
-  ShellCtrls, FileCtrl, StdCtrls, EditBtn, ComCtrls;
+  ShellCtrls, FileCtrl, StdCtrls, EditBtn, ComCtrls, SynEdit;
 
 type
 
@@ -17,7 +17,6 @@ type
     FileListBox1: TFileListBox;
     FilterComboBox1: TFilterComboBox;
     MainMenu1: TMainMenu;
-    Memo1: TMemo;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     Panel1: TPanel;
@@ -26,6 +25,7 @@ type
     ShellTreeView1: TShellTreeView;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
+    Memo1: TSynEdit;
     procedure DirectoryEdit1Change(Sender: TObject);
     procedure FileListBox1Click(Sender: TObject);
     procedure FilterComboBox1Change(Sender: TObject);
