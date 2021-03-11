@@ -1,6 +1,8 @@
 
 # TextView
 
+![alt text](https://upload.wikimedia.org/wikipedia/commons/f/f0/Pixelart-tv-iso.png)
+
 ## Overview
 
 *TextView* is a multiplatform application for quickly viewing text files contained in a folder.
