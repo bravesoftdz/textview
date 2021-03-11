@@ -78,7 +78,7 @@ var
   LDirectory, LFilter: string;
   LItemIndex: integer;
 begin
-  WriteLn('FormActivate');
+  //WriteLn('FormActivate');
   Caption := 'TextView ' + {$I version.inc};
   Splitter1.Height := Self.ClientHeight - 2 * 8;
   LoadSettings(LDirectory, LFilter, LItemIndex);
@@ -103,7 +103,7 @@ end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  WriteLn('FormClose');
+  //WriteLn('FormClose');
   SaveSettings(DirectoryEdit1.Directory, FilterComboBox1.Filter, FilterComboBox1.ItemIndex);
 end;
 
@@ -114,13 +114,13 @@ end;
 
 procedure TForm1.ShellTreeView1Change(Sender: TObject; Node: TTreeNode);
 begin
-  WriteLn('ShellTreeView1Change');
+  //WriteLn('ShellTreeView1Change');
   ChangeDirectory(ExcludeTrailingPathDelimiter(ShellTreeView1.Path));
 end;
 
 procedure TForm1.ChangeDirectory(const ADirectory: string);
 begin
-  WriteLn('ChangeDirectory');
+  //WriteLn('ChangeDirectory');
   if DirectoryEdit1.Directory <> ADirectory then DirectoryEdit1.Directory := ADirectory;
   if ExcludeTrailingPathDelimiter(ShellTreeView1.Path) <> ADirectory then ShellTreeView1.Path := IncludeTrailingPathDelimiter(ADirectory);
   if FileListBox1.Directory <> ADirectory then
@@ -132,7 +132,7 @@ end;
 
 procedure TForm1.LoadFirstItem;
 begin
-  WriteLn('LoadFirstItem');
+  //WriteLn('LoadFirstItem');
   if FileListBox1.Items.Count > 0 then
   begin
     FileListBox1.ItemIndex := 0;
@@ -143,7 +143,7 @@ end;
 
 procedure TForm1.FilterComboBox1Change(Sender: TObject);
 begin
-  WriteLn('FilterComboBox1Change');
+  //WriteLn('FilterComboBox1Change');
   FileListBox1.Mask := FilterComboBox1.Mask;
   FileListBox1.Refresh;
   LoadFirstItem;
@@ -151,14 +151,14 @@ end;
 
 procedure TForm1.FileListBox1Click(Sender: TObject);
 begin
-  WriteLn('FileListBox1Click');
+  //WriteLn('FileListBox1Click');
   Memo1.Lines.LoadFromFile(FileListBox1.FileName);
   Caption := FileListBox1.FileName;
 end;
 
 procedure TForm1.DirectoryEdit1Change(Sender: TObject);
 begin
-  WriteLn('DirectoryEdit1Change');
+  //WriteLn('DirectoryEdit1Change');
   Hint := DirectoryEdit1.Directory;
   ChangeDirectory(DirectoryEdit1.Directory);
 end;
