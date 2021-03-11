@@ -21,3 +21,5 @@ itemindex=0
 ## Credit
 
 *TextView* is a Lazarus project, inspired by [ViewTxt](https://github.com/crmacedonio/ViewTxt).
+
+The icon of the project comes from [here](https://commons.wikimedia.org/wiki/File:Pixelart-tv-iso.png).
