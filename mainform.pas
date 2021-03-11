@@ -35,6 +35,7 @@ type
     procedure ShellTreeView1Change(Sender: TObject; Node: TTreeNode);
   private
     procedure ChangeDirectory(const ADirectory: string);
+    procedure LoadFirstItem;
   public
 
   end;
@@ -56,16 +57,16 @@ uses
 {$ifdef mswindows}
 function GetSpecialFolder(const CSIDL: Integer): WideString;
 var
-  SpecialPath: PWideChar;
+  LPath: PWideChar;
 begin
-  Result := '';
-  SpecialPath := WideStrAlloc(MAX_PATH);
+  result := '';
+  LPath := WideStrAlloc(MAX_PATH);
   try
-    FillChar(SpecialPath^, MAX_PATH, 0);
-    if SHGetSpecialFolderPathW(0, SpecialPath, CSIDL, False) then
-      Result := SpecialPath;
+    FillChar(LPath^, MAX_PATH, 0);
+    if SHGetSpecialFolderPathW(0, LPath, CSIDL, FALSE) then
+      result := LPath;
   finally
-    StrDispose(SpecialPath);
+    StrDispose(LPath);
   end;
 end;
 {$endif}
@@ -77,6 +78,7 @@ var
   LDirectory, LFilter: string;
   LItemIndex: integer;
 begin
+  WriteLn('FormActivate');
   Caption := 'TextView ' + {$I version.inc};
   Splitter1.Height := Self.ClientHeight - 2 * 8;
   LoadSettings(LDirectory, LFilter, LItemIndex);
@@ -101,6 +103,7 @@ end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  WriteLn('FormClose');
   SaveSettings(DirectoryEdit1.Directory, FilterComboBox1.Filter, FilterComboBox1.ItemIndex);
 end;
 
@@ -111,30 +114,51 @@ end;
 
 procedure TForm1.ShellTreeView1Change(Sender: TObject; Node: TTreeNode);
 begin
+  WriteLn('ShellTreeView1Change');
   ChangeDirectory(ExcludeTrailingPathDelimiter(ShellTreeView1.Path));
 end;
 
 procedure TForm1.ChangeDirectory(const ADirectory: string);
 begin
+  WriteLn('ChangeDirectory');
   if DirectoryEdit1.Directory <> ADirectory then DirectoryEdit1.Directory := ADirectory;
   if ExcludeTrailingPathDelimiter(ShellTreeView1.Path) <> ADirectory then ShellTreeView1.Path := IncludeTrailingPathDelimiter(ADirectory);
-  if FileListBox1.Directory <> ADirectory then FileListBox1.Directory := ADirectory;
+  if FileListBox1.Directory <> ADirectory then
+  begin
+    FileListBox1.Directory := ADirectory;
+    LoadFirstItem;
+  end;
+end;
+
+procedure TForm1.LoadFirstItem;
+begin
+  WriteLn('LoadFirstItem');
+  if FileListBox1.Items.Count > 0 then
+  begin
+    FileListBox1.ItemIndex := 0;
+    FileListBox1.Click;
+  end else
+    Memo1.Clear;
 end;
 
 procedure TForm1.FilterComboBox1Change(Sender: TObject);
 begin
+  WriteLn('FilterComboBox1Change');
   FileListBox1.Mask := FilterComboBox1.Mask;
   FileListBox1.Refresh;
+  LoadFirstItem;
 end;
 
 procedure TForm1.FileListBox1Click(Sender: TObject);
 begin
+  WriteLn('FileListBox1Click');
   Memo1.Lines.LoadFromFile(FileListBox1.FileName);
   Caption := FileListBox1.FileName;
 end;
 
 procedure TForm1.DirectoryEdit1Change(Sender: TObject);
 begin
+  WriteLn('DirectoryEdit1Change');
   Hint := DirectoryEdit1.Directory;
   ChangeDirectory(DirectoryEdit1.Directory);
 end;
