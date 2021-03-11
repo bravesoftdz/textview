@@ -19,6 +19,10 @@ type
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
+    MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
@@ -36,6 +40,7 @@ type
   private
     procedure ChangeDirectory(const ADirectory: string);
     procedure LoadFirstItem;
+    procedure LoadFile(const AFileName: TFileName);
   public
 
   end;
@@ -50,14 +55,17 @@ implementation
 uses
   Settings
 {$ifdef mswindows}
-  , ShlObj
+  //, ShlObj
+  , WinDirs
 {$endif}
-  , LazLogger;
+  , LazLogger
+  , LConvEncoding;
 
 {$ifdef mswindows}
-function GetSpecialFolder(const CSIDL: Integer): WideString;
+(*
+function GetSpecialFolder(const CSIDL: integer): widestring;
 var
-  LPath: PWideChar;
+  LPath: pwidechar;
 begin
   result := '';
   LPath := WideStrAlloc(MAX_PATH);
@@ -69,6 +77,7 @@ begin
     StrDispose(LPath);
   end;
 end;
+*)
 {$endif}
 
 { TForm1 }
@@ -87,7 +96,8 @@ begin
   else
     DirectoryEdit1.Directory :=
 {$ifdef mswindows}
-      string(GetSpecialFolder(CSIDL_PERSONAL))
+      //string(GetSpecialFolder(CSIDL_PERSONAL))
+      string(GetWindowsSpecialDir(CSIDL_PERSONAL, FALSE))
 {$else}
       GetEnvironmentVariable('HOME')
 {$endif}
@@ -141,6 +151,30 @@ begin
     Memo1.Clear;
 end;
 
+procedure TForm1.LoadFile(const AFileName: TFileName);
+var
+  LList: TStringList;
+  LEncoding: string;
+begin
+  DebugLn(Format('LoadFile(%s)', [AFileName]));
+  if MenuItem4.Checked then
+  begin
+    LList := TStringList.Create;
+    LList.LoadFromFile(AFileName);
+    LEncoding := GuessEncoding(LList.Text);
+    if LEncoding = 'utf8' then
+      Memo1.Lines.Text := LList.Text
+    else
+    begin
+      DebugLn(Format('Conversion du texte en UTF-8 : %s', [AFileName]));
+      DebugLn(Format('Encodage initial : %s', [LEncoding]));
+      Memo1.Lines.Text := ConvertEncoding(LList.Text, LEncoding, EncodingUTF8);
+    end;
+    LList.Free;
+  end else
+    Memo1.Lines.LoadFromFile(AFileName);
+end;
+
 procedure TForm1.FilterComboBox1Change(Sender: TObject);
 begin
   DebugLn('FilterComboBox1Change');
@@ -152,7 +186,8 @@ end;
 procedure TForm1.FileListBox1Click(Sender: TObject);
 begin
   DebugLn('FileListBox1Click');
-  Memo1.Lines.LoadFromFile(FileListBox1.FileName);
+  //Memo1.Lines.LoadFromFile(FileListBox1.FileName);
+  LoadFile(FileListBox1.FileName);
   Caption := FileListBox1.FileName;
 end;
 
