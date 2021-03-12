@@ -44,6 +44,7 @@ type
     procedure ToolButton1Click(Sender: TObject);
     procedure ToolButton2Click(Sender: TObject);
   private
+    FLastFileLoaded: TFileName;
     procedure ChangeDirectory(const ADirectory: string);
     procedure LoadFirstItem;
     procedure LoadFile(const AFileName: TFileName);
@@ -94,6 +95,7 @@ var
   LItemIndex, LFontHeight: integer;
 begin
   DebugLn('FormActivate');
+  FLastFileLoaded := '';
   Caption := 'TextView ' + {$I version.inc};
   Splitter1.Height := Self.ClientHeight - 2 * 8 - ToolBar1.Height;
   LoadSettings(LDirectory, LFilter, LItemIndex, LFontHeight);
@@ -137,12 +139,12 @@ end;
 
 procedure TForm1.ToolButton1Click(Sender: TObject);
 begin
-  Memo1.Font.Height := Pred(Memo1.Font.Height);
+  if Memo1.Font.Height > 13 then Memo1.Font.Height := Pred(Memo1.Font.Height);
 end;
 
 procedure TForm1.ToolButton2Click(Sender: TObject);
 begin
-  Memo1.Font.Height := Succ(Memo1.Font.Height);
+  if Memo1.Font.Height < 18 then Memo1.Font.Height := Succ(Memo1.Font.Height);
 end;
 
 procedure TForm1.ChangeDirectory(const ADirectory: string);
@@ -174,6 +176,14 @@ var
   LEncoding: string;
 begin
   DebugLn(Format('LoadFile(%s)', [AFileName]));
+
+  if AFileName = FLastFileLoaded then
+  begin
+    DebugLn('File already loaded');
+    Exit;
+  end else
+    FLastFileLoaded := AFileName;
+
   if MenuItem4.Checked then
   begin
     LList := TStringList.Create;
