@@ -6,12 +6,14 @@ interface
 procedure LoadSettings(
   out ADirectory: string;
   out AFilter: string;
-  out AItemIndex: integer
+  out AItemIndex: integer;
+  out AFontHeight: integer
 );
 procedure SaveSettings(
   const ADirectory: string;
   const AFilter: string;
-  const AItemIndex: integer
+  const AItemIndex: integer;
+  const AFontHeight: integer
 );
   
 implementation
@@ -25,7 +27,8 @@ var
 procedure LoadSettings(
   out ADirectory: string;
   out AFilter: string;
-  out AItemIndex: integer
+  out AItemIndex: integer;
+  out AFontHeight: integer
 );
 begin
   with TIniFile.Create(LIniFileName) do
@@ -33,6 +36,7 @@ begin
     ADirectory := ReadString('.', 'directory', '');
     AFilter := ReadString('.', 'filter', '');
     AItemIndex := ReadInteger('.', 'itemindex', -1);
+    AFontHeight := ReadInteger('.', 'fontheight', 13);
   finally
     Free;
   end;
@@ -41,7 +45,8 @@ end;
 procedure SaveSettings(
   const ADirectory: string;
   const AFilter: string;
-  const AItemIndex: integer
+  const AItemIndex: integer;
+  const AFontHeight: integer
 );
 begin
   with TIniFile.Create(LIniFileName) do
@@ -49,6 +54,7 @@ begin
     WriteString('.', 'directory', ADirectory);
     WriteString('.', 'filter', AFilter);
     WriteInteger('.', 'itemindex', AItemIndex);
+    WriteInteger('.', 'fontheight', AFontHeight);
     UpdateFile;
   finally
     Free;

@@ -16,6 +16,7 @@ type
     DirectoryEdit1: TDirectoryEdit;
     FileListBox1: TFileListBox;
     FilterComboBox1: TFilterComboBox;
+    ImageList1: TImageList;
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
@@ -30,6 +31,9 @@ type
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     Memo1: TSynEdit;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
     procedure DirectoryEdit1Change(Sender: TObject);
     procedure FileListBox1Click(Sender: TObject);
     procedure FilterComboBox1Change(Sender: TObject);
@@ -37,6 +41,8 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure MenuItem2Click(Sender: TObject);
     procedure ShellTreeView1Change(Sender: TObject; Node: TTreeNode);
+    procedure ToolButton1Click(Sender: TObject);
+    procedure ToolButton2Click(Sender: TObject);
   private
     procedure ChangeDirectory(const ADirectory: string);
     procedure LoadFirstItem;
@@ -85,12 +91,12 @@ end;
 procedure TForm1.FormActivate(Sender: TObject);
 var
   LDirectory, LFilter: string;
-  LItemIndex: integer;
+  LItemIndex, LFontHeight: integer;
 begin
   DebugLn('FormActivate');
   Caption := 'TextView ' + {$I version.inc};
-  Splitter1.Height := Self.ClientHeight - 2 * 8;
-  LoadSettings(LDirectory, LFilter, LItemIndex);
+  Splitter1.Height := Self.ClientHeight - 2 * 8 - ToolBar1.Height;
+  LoadSettings(LDirectory, LFilter, LItemIndex, LFontHeight);
   if DirectoryExists(LDirectory) then
     DirectoryEdit1.Directory := LDirectory
   else
@@ -109,12 +115,13 @@ begin
     FilterComboBox1.ItemIndex := LItemIndex;
     FilterComboBox1Change(Sender);
   end;
+  Memo1.Font.Height := LFontHeight;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   DebugLn('FormClose');
-  SaveSettings(DirectoryEdit1.Directory, FilterComboBox1.Filter, FilterComboBox1.ItemIndex);
+  SaveSettings(DirectoryEdit1.Directory, FilterComboBox1.Filter, FilterComboBox1.ItemIndex, Memo1.Font.Height);
 end;
 
 procedure TForm1.MenuItem2Click(Sender: TObject);
@@ -126,6 +133,16 @@ procedure TForm1.ShellTreeView1Change(Sender: TObject; Node: TTreeNode);
 begin
   DebugLn('ShellTreeView1Change');
   ChangeDirectory(ExcludeTrailingPathDelimiter(ShellTreeView1.Path));
+end;
+
+procedure TForm1.ToolButton1Click(Sender: TObject);
+begin
+  Memo1.Font.Height := Pred(Memo1.Font.Height);
+end;
+
+procedure TForm1.ToolButton2Click(Sender: TObject);
+begin
+  Memo1.Font.Height := Succ(Memo1.Font.Height);
 end;
 
 procedure TForm1.ChangeDirectory(const ADirectory: string);
