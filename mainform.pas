@@ -174,6 +174,7 @@ begin
   begin
     lbFiles.ItemIndex := 0;
     lbFiles.Click;
+    lbFiles.SetFocus;
   end else
     seText.Clear;
 end;
