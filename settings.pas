@@ -1,5 +1,5 @@
 
-unit Settings;
+unit settings;
 
 interface
 

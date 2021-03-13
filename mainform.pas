@@ -34,15 +34,19 @@ type
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
     procedure DirectoryEdit1Change(Sender: TObject);
     procedure FileListBox1Click(Sender: TObject);
     procedure FilterComboBox1Change(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure MenuItem2Click(Sender: TObject);
+    procedure MenuItem6Click(Sender: TObject);
     procedure ShellTreeView1Change(Sender: TObject; Node: TTreeNode);
     procedure ToolButton1Click(Sender: TObject);
     procedure ToolButton2Click(Sender: TObject);
+    procedure ToolButton4Click(Sender: TObject);
   private
     FLastFileLoaded: TFileName;
     procedure ChangeDirectory(const ADirectory: string);
@@ -60,32 +64,13 @@ implementation
 {$R *.lfm}
 
 uses
-  Settings
+  Settings,
 {$ifdef mswindows}
-  //, ShlObj
-  , WinDirs
+  WinDirs,
 {$endif}
-  , LazLogger
-  , LConvEncoding;
-
-{$ifdef mswindows}
-(*
-function GetSpecialFolder(const CSIDL: integer): widestring;
-var
-  LPath: pwidechar;
-begin
-  result := '';
-  LPath := WideStrAlloc(MAX_PATH);
-  try
-    FillChar(LPath^, MAX_PATH, 0);
-    if SHGetSpecialFolderPathW(0, LPath, CSIDL, FALSE) then
-      result := LPath;
-  finally
-    StrDispose(LPath);
-  end;
-end;
-*)
-{$endif}
+  LazLogger,
+  LConvEncoding,
+  AboutForm;
 
 { TForm1 }
 
@@ -95,6 +80,8 @@ var
   LItemIndex, LFontHeight: integer;
 begin
   DebugLn('FormActivate');
+  DebugLn(Format('ParamStr(0) = %s', [ParamStr(0)]));
+  DebugLn(Format('Application.ExeName = %s', [Application.ExeName]));
   FLastFileLoaded := '';
   Caption := 'TextView ' + {$I version.inc};
   Splitter1.Height := Self.ClientHeight - 2 * 8 - ToolBar1.Height;
@@ -104,7 +91,6 @@ begin
   else
     DirectoryEdit1.Directory :=
 {$ifdef mswindows}
-      //string(GetSpecialFolder(CSIDL_PERSONAL))
       string(GetWindowsSpecialDir(CSIDL_PERSONAL, FALSE))
 {$else}
       GetEnvironmentVariable('HOME')
@@ -131,6 +117,18 @@ begin
   Close;
 end;
 
+procedure TForm1.MenuItem6Click(Sender: TObject);
+var
+  F: TAboutForm;
+begin
+  F := TAboutForm.Create(nil);
+  try
+    F.ShowModal;
+  finally
+    F.Free;
+  end;
+end;
+
 procedure TForm1.ShellTreeView1Change(Sender: TObject; Node: TTreeNode);
 begin
   DebugLn('ShellTreeView1Change');
@@ -145,6 +143,16 @@ end;
 procedure TForm1.ToolButton2Click(Sender: TObject);
 begin
   if Memo1.Font.Height < 18 then Memo1.Font.Height := Succ(Memo1.Font.Height);
+end;
+
+procedure TForm1.ToolButton4Click(Sender: TObject);
+begin
+  try
+    ExecuteProcess(Application.ExeName, [], []);
+  except
+    on E: EOSError do
+      DebugLn(Format('Error %d: %s', [E.ErrorCode, E.Message]));
+  end;
 end;
 
 procedure TForm1.ChangeDirectory(const ADirectory: string);
