@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 136
   Width = 720
   Caption = 'TextView'
-  ClientHeight = 455
+  ClientHeight = 461
   ClientWidth = 720
   Menu = MainMenu1
   OnActivate = FormActivate
@@ -24,21 +24,21 @@ object Form1: TForm1
     Constraints.MinHeight = 120
     ParentColor = False
     TabOrder = 0
-    object ShellTreeView1: TShellTreeView
+    object tvDirectories: TShellTreeView
       Left = 5
-      Height = 98
-      Top = 43
+      Height = 104
+      Top = 37
       Width = 182
       Align = alClient
       BorderSpacing.Around = 4
       FileSortType = fstNone
       TabOrder = 0
-      OnChange = ShellTreeView1Change
+      OnChange = tvDirectoriesChange
       ObjectTypes = [otFolders]
     end
-    object DirectoryEdit1: TDirectoryEdit
+    object edDirectory: TDirectoryEdit
       Left = 5
-      Height = 34
+      Height = 28
       Top = 5
       Width = 182
       Directory = '.'
@@ -51,7 +51,7 @@ object Form1: TForm1
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
-      OnChange = DirectoryEdit1Change
+      OnChange = edDirectoryChange
       Text = '.'
     end
   end
@@ -62,19 +62,19 @@ object Form1: TForm1
     AnchorSideBottom.Control = Splitter1
     AnchorSideBottom.Side = asrBottom
     Left = 8
-    Height = 238
+    Height = 244
     Top = 188
     Width = 192
     Anchors = [akTop, akLeft, akRight, akBottom]
     Caption = 'Panel2'
-    ClientHeight = 238
+    ClientHeight = 244
     ClientWidth = 192
     Constraints.MinHeight = 120
     ParentColor = False
     TabOrder = 1
-    object FilterComboBox1: TFilterComboBox
+    object cbFilter: TFilterComboBox
       Left = 5
-      Height = 34
+      Height = 31
       Top = 5
       Width = 182
       Align = alTop
@@ -82,18 +82,18 @@ object Form1: TForm1
       Filter = 'All files|*.*|Basic source|*.bas|C source|*.c|Chess games|*.pgn|Log files|*.log|Lua source|*.lua|Pascal source|*.pas|Text files|*.txt'
       ItemIndex = 0
       TabOrder = 0
-      OnChange = FilterComboBox1Change
+      OnChange = cbFilterChange
     end
-    object FileListBox1: TFileListBox
+    object lbFiles: TFileListBox
       Left = 5
-      Height = 190
-      Top = 43
+      Height = 199
+      Top = 40
       Width = 182
       Align = alClient
       BorderSpacing.Around = 4
       Directory = '/home/roland/Documents/pascal/lazarus/textview'
       ItemHeight = 23
-      OnClick = FileListBox1Click
+      OnClick = lbFilesClick
       TabOrder = 1
     end
   end
@@ -103,19 +103,19 @@ object Form1: TForm1
     AnchorSideBottom.Control = Splitter1
     AnchorSideBottom.Side = asrBottom
     Left = 208
-    Height = 392
+    Height = 398
     Top = 34
     Width = 504
     Anchors = [akTop, akLeft, akRight, akBottom]
     Caption = 'Panel3'
-    ClientHeight = 392
+    ClientHeight = 398
     ClientWidth = 504
     Constraints.MinWidth = 248
     ParentColor = False
     TabOrder = 2
-    inline Memo1: TSynEdit
+    inline seText: TSynEdit
       Left = 5
-      Height = 382
+      Height = 388
       Top = 5
       Width = 494
       Align = alClient
@@ -614,7 +614,7 @@ object Form1: TForm1
   end
   object Splitter1: TSplitter
     Left = 200
-    Height = 392
+    Height = 398
     Top = 34
     Width = 8
     Align = alNone
@@ -648,43 +648,43 @@ object Form1: TForm1
     Flat = False
     Images = ImageList1
     TabOrder = 5
-    object ToolButton1: TToolButton
+    object tbDecrease: TToolButton
       Left = 1
       Hint = 'Decrease Font Size'
       Top = 2
-      Caption = 'ToolButton1'
+      Caption = 'tbDecrease'
       ImageIndex = 0
-      OnClick = ToolButton1Click
+      OnClick = tbDecreaseClick
       ParentShowHint = False
       ShowHint = True
     end
-    object ToolButton2: TToolButton
+    object tbIncrease: TToolButton
       Left = 24
       Hint = 'Increase Font Size'
       Top = 2
-      Caption = 'ToolButton2'
+      Caption = 'tbIncrease'
       ImageIndex = 1
-      OnClick = ToolButton2Click
+      OnClick = tbIncreaseClick
       ParentShowHint = False
       ShowHint = True
     end
-    object ToolButton4: TToolButton
+    object tbNewInstance: TToolButton
       Left = 47
       Hint = 'Start another instance of TextView'
       Top = 2
-      Caption = 'ToolButton4'
+      Caption = 'tbNewInstance'
       ImageIndex = 2
-      OnClick = ToolButton4Click
+      OnClick = tbNewInstanceClick
       ParentShowHint = False
       ShowHint = True
     end
-    object ToolButton3: TToolButton
+    object tbQuit: TToolButton
       Left = 70
       Hint = 'Quit'
       Top = 2
-      Caption = 'ToolButton3'
+      Caption = 'tbQuit'
       ImageIndex = 3
-      OnClick = MenuItem2Click
+      OnClick = miQuitClick
       ParentShowHint = False
       ShowHint = True
     end
@@ -692,25 +692,25 @@ object Form1: TForm1
   object MainMenu1: TMainMenu
     left = 528
     top = 200
-    object MenuItem1: TMenuItem
+    object miTextView: TMenuItem
       Caption = 'TextView'
-      object MenuItem2: TMenuItem
+      object miQuit: TMenuItem
         Caption = 'Quit'
-        OnClick = MenuItem2Click
+        OnClick = miQuitClick
       end
     end
-    object MenuItem3: TMenuItem
+    object miOptions: TMenuItem
       Caption = 'Options'
-      object MenuItem4: TMenuItem
+      object miConvert: TMenuItem
         Caption = 'Convert Encoding'
         Checked = True
       end
     end
-    object MenuItem5: TMenuItem
+    object miHelp: TMenuItem
       Caption = 'Help'
-      object MenuItem6: TMenuItem
+      object miAbout: TMenuItem
         Caption = 'About'
-        OnClick = MenuItem6Click
+        OnClick = miAboutClick
       end
     end
   end

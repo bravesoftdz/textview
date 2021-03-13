@@ -16,14 +16,14 @@ type
   { TAboutForm }
 
   TAboutForm = class(TForm)
-    btnClose: TBitBtn;
-    imgLogo: TImage;
-    lblWebsite: TLabel;
-    lblTitle: TLabel;
+    btClose: TBitBtn;
+    imLogo: TImage;
+    lbWebsite: TLabel;
+    lbTitle: TLabel;
     procedure FormCreate(Sender: TObject);
-    procedure lblURLClick(Sender: TObject);
-    procedure lblURLMouseEnter(Sender: TObject);
-    procedure lblURLMouseLeave(Sender: TObject);
+    procedure URLClick(Sender: TObject);
+    procedure URLMouseEnter(Sender: TObject);
+    procedure URLMouseLeave(Sender: TObject);
   private
 
   public
@@ -41,23 +41,24 @@ uses
 
 procedure TAboutForm.FormCreate(Sender: TObject);
 begin
-  imgLogo.Picture.Assign(Application.Icon);
-  imgLogo.Picture.Icon.Current := 0;
+  imLogo.Picture.Assign(Application.Icon);
+  imLogo.Picture.Icon.Current := 0;
+  lbTitle.Caption := 'TextView ' + {$I version.inc};
 end;
 
-procedure TAboutForm.lblURLClick(Sender: TObject);
+procedure TAboutForm.URLClick(Sender: TObject);
 begin
-  if Sender = lblWebsite then
+  if Sender = lbWebsite then
     OpenURL('https://github.com/rchastain/textview');
 end;
 
-procedure TAboutForm.lblURLMouseEnter(Sender: TObject);
+procedure TAboutForm.URLMouseEnter(Sender: TObject);
 begin
   with (Sender as TControl).Font do
     Style := Style + [fsUnderline];
 end;
 
-procedure TAboutForm.lblURLMouseLeave(Sender: TObject);
+procedure TAboutForm.URLMouseLeave(Sender: TObject);
 begin
   with (Sender as TControl).Font do
     Style := Style - [fsUnderline];

@@ -20,6 +20,10 @@ filter=All files|*.*|Basic source|*.bas|C source|*.c|Log|*.log|Lua source|*.lua|
 itemindex=0
 ```
 
-## Credit
+## Credits
 
-*TextView* is a Lazarus project, inspired by [ViewTxt](https://github.com/crmacedonio/ViewTxt). The icon of the project comes from [here](https://commons.wikimedia.org/wiki/File:Pixelart-tv-iso.png).
+*TextView* is a Lazarus project, inspired by [ViewTxt](https://github.com/crmacedonio/ViewTxt).
+
+The logo of the project comes from [here](https://commons.wikimedia.org/wiki/File:Pixelart-tv-iso.png).
+
+The icons of the tool bar come from the [Silk icon set](http://www.famfamfam.com/lab/icons/silk/).
